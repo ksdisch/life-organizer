@@ -1,0 +1,23 @@
+/* Define your color scheme using CSS variables */
+:root {
+    --primary-color: #3498db;
+    --secondary-color: #2ecc71;
+    --background-color: #f5f5f5;
+    --text-color: #333;
+}
+
+/* Apply the color scheme to HTML elements */
+body {
+    background-color: var(--background-color);
+    color: var(--text-color);
+}
+
+h1, h2, h3, h4, h5, h6 {
+    color: var(--primary-color);
+}
+
+a {
+    color: var(--secondary-color);
+}
+
+/* Add other CSS rules as needed */
