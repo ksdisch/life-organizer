@@ -21,3 +21,45 @@ a {
 }
 
 /* Add other CSS rules as needed */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, sans-serif;
+}
+
+header {
+    background-color: #f8f9fa;
+    padding: 1rem;
+    border-bottom: 1px solid #dee2e6;
+}
+
+header h1 {
+    display: inline;
+    margin-right: 2rem;
+}
+
+header nav {
+    display: inline;
+}
+
+header nav ul {
+    list-style-type: none;
+}
+
+header nav ul li {
+    display: inline;
+    margin-right: 1rem;
+}
+
+header nav ul li a {
+    text-decoration: none;
+    color: #495057;
+}
+
+header nav ul li a:hover {
+    color: #212529;
+}

@@ -1,110 +1,18 @@
-<!DOCTYPE html>
-<html lang="en">
+{% extends 'base.html' %}
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Life Organizer</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
-    <!-- Add Bootstrap CSS -->
-    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
-</head>
-
-<body>
+{% block content %}
     <div class="container-fluid">
         <h1 class="text-center my-4">Life Organizer</h1>
         <div class="row">
             <!-- Task list column -->
             <div class="col-lg-6">
-                <h3>Tasks</h3>
-                <form action="/add" method="post">
-                    <div class="input-group mb-3">
-                        <input type="text" class="form-control" name="title" placeholder="New task">
-                        <select class="form-select" name="category_id">
-                            {% for category in task_categories %}
-                            <option value="{{ category.id }}">{{ category.name }}</option>
-                            {% endfor %}
-                        </select>
-                        <button type="submit" class="btn btn-primary">Add</button>
-                    </div>
-                </form>
-                <ul class="list-group" id="tasks">
-                    {% for task in tasks %}
-                    <li class="list-group-item d-flex justify-content-between align-items-center"
-                        data-category-id="{{ task.category.id }}">
-                        {{ task.title }}
-                        <form action="/toggle-task/{{ task.id }}" method="post">
-                            <input type="hidden" name="status" value="{% if task.completed %}incomplete{% else %}completed{% endif %}">
-                            <input type="checkbox" {% if task.completed %}checked{% endif %}>
-                        </form>                        
-                    </li>
-                    {% endfor %}
-                </ul>
-                <!-- Completed tasks list column -->
-                <div class="col-lg-6">
-                    <h3>Completed Tasks</h3>
-                    <ul class="list-group" id="completed-tasks">
-                        {% for task in completed_tasks %}
-                            <li class="list-group-item d-flex justify-content-between align-items-center" data-category-id="{{ task.category.id }}">
-                                {{ task.title }}
-                                <form action="/toggle/{{ task.id }}" method="post">
-                                    <input type="hidden" name="status" value="{% if task.completed %}incomplete{% else %}completed{% endif %}">
-                                    <input type="checkbox" {% if task.completed %}checked{% endif %}>
-                                </form>
-                            </li>
-                        {% endfor %}
-                    </ul>
-                </div>
+                {% include 'tasks.html' %}
             </div>
 
             <!-- Grocery list column -->
             <div class="col-lg-6">
-                <h3>Grocery List</h3>
-                <form action="/add-grocery" method="post">
-                    <div class="input-group mb-3">
-                        <input type="text" class="form-control" name="title" placeholder="Add item">
-                        <select name="category_id" class="form-select">
-                            {% for category in grocery_categories %}
-                            <option value="{{ category.id }}">{{ category.name }}</option>
-                            {% endfor %}
-                        </select>
-                        <button type="submit" class="btn btn-primary">Add</button>
-                    </div>
-                </form>
-                <ul class="list-group" id="grocery_items">
-                    {% for grocery in grocery_items %}
-                    <li class="list-group-item d-flex justify-content-between align-items-center"
-                        data-category-id="{{ grocery.category.id }}">
-                        {{ grocery.name }}
-                        <form action="/toggle-grocery/{{ grocery.id }}" method="post">
-                            <input type="hidden" name="status" value="{% if grocery.completed %}incomplete{% else %}completed{% endif %}">
-                            <input type="checkbox" {% if grocery.completed %}checked{% endif %}>
-                        </form>                        
-                    </li>
-                    {% endfor %}
-                </ul>
-                    <h3>Acquired</h3>
-                    <ul class="list-group" id="completed-grocery-items">
-                    {% for grocery in completed_grocery_items %}
-                        <li class="list-group-item d-flex justify-content-between align-items-center"
-                            data-category-id="{{ grocery.category.id }}">
-                            {{ grocery.name }}
-                            <form action="/toggle-grocery/{{ grocery.id }}" method="post">
-                                <input type="hidden" name="status" value="{% if grocery.completed %}incomplete{% else %}completed{% endif %}">
-                                <input type="checkbox" {% if grocery.completed %}checked{% endif %}>
-                            </form>
-                        </li>
-                    {% endfor %}
-                    </ul>
+                {% include 'grocery.html' %}
             </div>
         </div>
     </div>
-    <!-- Add Bootstrap JS (optional, for interactivity) -->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-    <script src="{{ url_for('static', filename='main.js') }}"></script>
-    
-</body>
-
-</html>
+{% endblock %}
