@@ -63,3 +63,25 @@ header nav ul li a {
 header nav ul li a:hover {
     color: #212529;
 }
+
+/* Add styling for the workout builder table */
+#workoutTable {
+    border-collapse: collapse;
+    width: 100%;
+}
+
+#workoutTable th, #workoutTable td {
+    border: 1px solid #ccc;
+    padding: 8px;
+    text-align: left;
+    min-width: 100px; /* Set the minimum width for cells */
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+/* Set a style for input and select elements within the table cells */
+#workoutTable input, #workoutTable select {
+    width: 100%;
+    box-sizing: border-box;
+}

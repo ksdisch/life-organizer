@@ -1,0 +1,80 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <div class="container">
+        <h1 class="text-center my-4">Block Schedule</h1>
+        <form action="/save_daily_schedule" method="post", onsubmit="return validateForm()">
+            <input type="date" name="schedule_date">
+            <table>
+              <tr>
+                <th>Activity</th>
+                <th>Start Time</th>
+                <th>End Time</th>
+              </tr>
+              {% for i in range(10) %}
+              <tr>
+                <td>
+                  <input type="radio" name="activity_type_{{ i }}" value="task" onchange="toggleInputFields('{{ i }}', this)"> Task
+                  <select name="task_{{ i }}" disabled>
+                    {% for task in tasks %}
+                      <option value="{{ task.id }}">{{ task.title }}</option>
+                    {% endfor %}
+                  </select>
+                  <input type="radio" name="activity_type_{{ i }}" value="category" onchange="toggleInputFields('{{ i }}', this)"> Categories/Domains
+                  <select name="category_{{ i }}" disabled>
+                    {% for category in categories %}
+                      <option value="{{ category.id }}">{{ category.name }}</option>
+                    {% endfor %}
+                  </select>
+                  <input type="radio" name="activity_type_{{ i }}" value="custom_task" onchange="toggleInputFields('{{ i }}', this)"> Custom Task
+                  <input type="text" name="custom_task_{{ i }}" placeholder="Enter a custom task" disabled>
+                </td>
+                <td>
+                  <input type="time" name="start_time_{{ i }}" step="900">
+                </td>
+                <td>
+                  <input type="time" name="end_time_{{ i }}" step="900">
+                </td>
+              </tr>
+              {% endfor %}
+            </table>
+            <input type="hidden" name="num_activities" value="{{ 10 }}">  {# Change this line to use the correct number of activities #}
+            <button type="submit">Save</button>
+        </form>          
+    </div>
+    <script>
+      function toggleInputFields(activity, radioButton) {
+        const taskSelect = document.querySelector(`select[name="task_${activity}"]`);
+        const categorySelect = document.querySelector(`select[name="category_${activity}"]`);
+        const customTaskInput = document.querySelector(`input[name="custom_task_${activity}"]`);
+        
+        if (radioButton.value === 'task') {
+          taskSelect.disabled = false;
+          categorySelect.disabled = true;
+          customTaskInput.disabled = true;
+        } else if (radioButton.value === 'category') {
+          taskSelect.disabled = true;
+          categorySelect.disabled = false;
+          customTaskInput.disabled = true;
+        } else {
+          taskSelect.disabled = true;
+          categorySelect.disabled = true;
+          customTaskInput.disabled = false;
+        }
+      }
+      function validateForm() {
+        const scheduleDate = document.querySelector('input[name="schedule_date"]');
+        
+        // Check if the schedule date is filled out
+        if (!scheduleDate.value) {
+          alert('Please select a date for this schedule to be logged.');
+          return false;
+        }
+        
+        // You can add more validations here if needed
+        
+        return true;
+      }
+
+    </script>
+{% endblock %}

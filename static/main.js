@@ -48,3 +48,4 @@ const groceryCheckboxes = document.querySelectorAll('#grocery_items input[type="
 groceryCheckboxes.forEach(checkbox => {
     checkbox.addEventListener('change', event => onCheckboxChange(event, completedGroceryItemsList, groceryItemsList));
 });
+

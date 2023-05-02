@@ -1,0 +1,118 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+    <div class="container">
+        <h1 class="text-center my-4">New Workout</h1>
+        <form action="/save_workout" method="post" onsubmit="return prepareForm()">
+            <input type="date" name="workout_date">
+            <table id="workoutTable">
+                <tr>
+                    <th>Exercise</th>
+                    <th>Category</th>
+                    <th>Sets</th>
+                    <th>Reps</th>
+                    <th>Weight</th>
+                    <th>Duration</th>
+                    <th>Distance</th>
+                    <th>Description</th>
+                    <th></th> <!-- Add an empty header for the delete button -->
+                </tr>
+            </table>
+            <button onclick="addRow()" type="button">Add Exercise</button>
+            <button type="submit">Save Workout</button>
+        </form>
+    </div>
+    <script>
+        var rowCounter = 0; 
+        function addRow() {
+            var table = document.getElementById("workoutTable");
+            var row = table.insertRow(-1); // Insert row at the last position
+
+            // Increment the counter and use it to generate unique id attributes
+            rowCounter++;
+
+            const newExerciseInputId = 'newExerciseInput' + rowCounter;
+            const newCategoryInputId = 'newCategoryInput' + rowCounter;
+
+            // Create cells and add content
+            var exercise = row.insertCell(0);
+            var exercise_category = row.insertCell(1);
+            var sets = row.insertCell(2);
+            var reps = row.insertCell(3);
+            var weight = row.insertCell(4);
+            var duration = row.insertCell(5);
+            var distance = row.insertCell(6);
+            var description = row.insertCell(7);
+            var deleteButton = row.insertCell(8); // Add a cell for the delete button
+
+            exercise.innerHTML = '<select name="exercise" onchange="toggleNewExerciseInput(this, \'' + newExerciseInputId + '\')">' + 
+                         '<option value="">Select an exercise</option>' +
+                         '{% for exercise in exercises %}' +
+                         '<option value="{{ exercise.id }}">{{ exercise.title }}</option>' +
+                         '{% endfor %}' +
+                         '<option value="new">Add new exercise...</option>' +
+                         '</select>' +
+                         '<input type="text" id="' + newExerciseInputId + '" name="new_exercise" style="display:none">';
+
+            exercise_category.innerHTML = '<select name="exercise_category" onchange="toggleNewCategoryInput(this, \'' + newCategoryInputId + '\')">' +
+                                  '<option value="">Select a category</option>' +
+                                  '{% for category in categories %}' +
+                                  '<option value="{{ category.id }}">{{ category.name }}</option>' +
+                                  '{% endfor %}' +
+                                  '<option value="new">Add new category...</option>' +
+                                  '</select>' +
+                                  '<input type="text" id="' + newCategoryInputId + '" name="new_category" style="display:none">';
+            sets.innerHTML = '<input type="number" name="sets" min="1" step="1">';
+            reps.innerHTML = '<input type="number" name="reps" min="1" step="1">';
+            weight.innerHTML = '<input type="number" name="weight" min="0" step="0.1">';
+            duration.innerHTML = '<input type="time" name="duration" step="60">';
+            distance.innerHTML = '<input type="number" name="distance" min="0" step="0.1">';
+            description.innerHTML = '<input type="text" name="description">';
+            deleteButton.innerHTML = '<button onclick="deleteRow(this)" type="button">Delete</button>'; // Add the delete button
+        }
+
+        function deleteRow(button) {
+            var row = button.parentNode.parentNode;
+            row.parentNode.removeChild(row);
+        }
+
+        function toggleNewExerciseInput(selectElement, newExerciseInputId) {
+            var newExerciseInput = document.getElementById(newExerciseInputId);
+            var newCategoryInput = document.getElementById('newCategoryInput' + rowCounter); // Use the rowCounter to get the proper newCategoryInput
+            if (selectElement.value === "new") {
+                newExerciseInput.style.display = "block";
+                newCategoryInput.style.display = "block";
+            } else {
+                newExerciseInput.style.display = "none";
+                newCategoryInput.style.display = "none";
+            }
+        }
+
+        function toggleNewCategoryInput(selectElement, newCategoryInputId) {
+            var newCategoryInput = document.getElementById(newCategoryInputId);
+            if (selectElement.value === "new") {
+                newCategoryInput.style.display = "block";
+            } else {
+                newCategoryInput.style.display = "none";
+                newCategoryInput.value = "";
+            }
+        }
+        function prepareForm() {
+            console.log("prepareForm called");
+            
+            var exerciseDropdowns = document.getElementsByName("exercise");
+            var newExerciseInputs = document.getElementsByName("new_exercise");
+
+            for (var i = 0; i < exerciseDropdowns.length; i++) {
+                if (exerciseDropdowns[i].value === "new") {
+                    exerciseDropdowns[i].value = newExerciseInputs[i].value;
+                }
+            }
+
+            return true;
+        }
+
+    </script>
+
+{% endblock %}
