@@ -1,0 +1,86 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container">
+    <h1 class="text-center my-4">Daily Schedule Builder</h1>
+    <form action="/save_daily_schedule" method="post" enctype="multipart/form-data" onsubmit="return prepareDailyScheduleForm()">
+        <label for="schedule_date">Date:</label>
+        <input type="date" id="schedule_date" name="schedule_date" required>
+        <table id="scheduleTable">
+            <tr>
+                <th>Event/Task</th>
+                <th>Start Time</th>
+                <th>End Time</th>
+                <th>Description</th>
+                <th></th> <!-- Add an empty header for the delete button -->
+            </tr>
+        </table>
+        <button onclick="addEvent()" type="button">Add Event/Task</button>
+        <button type="submit">Save Schedule</button>
+    </form>
+</div>
+
+<script>
+  var eventCounter = 0;
+
+  function addEvent() {
+      var table = document.getElementById("scheduleTable");
+      var row = table.insertRow(-1); // Insert row at the last position
+
+      // Increment the counter and use it to generate unique id attributes
+      eventCounter++;
+
+      // Create cells and add content
+      var task = row.insertCell(0);
+      var start_time = row.insertCell(1)
+      var end_time = row.insertCell(2);
+      var description = row.insertCell(3);
+      var deleteButton = row.insertCell(4); // Add a cell for the delete button
+
+      task.innerHTML = '<input type="text" id="task' + eventCounter + '" name="task">';
+      start_time.innerHTML = '<input type="time" id="start_time' + eventCounter + '" name="start_time">';
+      end_time.innerHTML = '<input type="time" id="end_time' + eventCounter + '" name="end_time">';
+      description.innerHTML = '<input type="text" id="description' + eventCounter + '" name="description">';
+      deleteButton.innerHTML = '<button onclick="deleteEvent(this)" type="button">Delete</button>'; // Add the delete button
+  }
+
+  function deleteEvent(button) {
+      var row = button.parentNode.parentNode;
+      row.parentNode.removeChild(row);
+  }
+
+  function prepareDailyScheduleForm() {
+    var tasks = [];
+    var startTimes = [];
+    var endTimes = [];
+    var descriptions = [];
+
+    for (var i = 1; i <= eventCounter; i++) {
+        var task = document.getElementById("task" + i);
+        var start_time = document.getElementById("start_time" + i);
+        var end_time = document.getElementById("end_time" + i);
+        var description = document.getElementById("description" + i);
+
+        if (task && start_time && end_time && description) {
+            tasks.push(task.value);
+            startTimes.push(start_time.value);
+            endTimes.push(end_time.value);
+            descriptions.push(description.value);
+        }
+    }
+
+    // Update the form inputs to store the data as arrays
+    var form = document.querySelector("form");
+    form.querySelector("input[name='task']").value = JSON.stringify(tasks);
+    form.querySelector("input[name='start_time']").value = JSON.stringify(startTimes);
+    form.querySelector("input[name='end_time']").value = JSON.stringify(endTimes);
+    form.querySelector("input[name='description']").value = JSON.stringify(descriptions);
+
+    return true;
+}
+
+
+
+
+</script>
+{% endblock %}

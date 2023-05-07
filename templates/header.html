@@ -1,10 +1,16 @@
 <header>
-    <h1>Task & Grocery Manager</h1>
+    <h1>Life Organizer</h1>
     <nav>
         <ul>
             <li><a href="{{ url_for('index') }}">Home</a></li>
-            <li><a href="{{ url_for('daily_schedule_builder') }}">Daily Scheduler</a></li>
+            <li><a href="{{ url_for('daily_sched_builder') }}">Daily Schedule Builder</a></li>
+            <li><a href="{{ url_for('daily_sched_viewer') }}">View Daily Agendas</a></li>
+            <li><a href="{{ url_for('workout_viewer') }}">View Daily Workouts</a></li>
             <li><a href="{{ url_for('workout_builder') }}">New Workout</a></li>
+            <li><a href="{{ url_for('goals') }}">Goals</a></li>
+            <li><a href="{{ url_for('todos') }}">To-Do Lists</a></li>
+            <li><a href="{{ url_for('items') }}">Items</a></li>
+
         </ul>
     </nav>
 </header>
