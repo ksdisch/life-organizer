@@ -69,15 +69,41 @@
         }
     }
 
-    // Update the form inputs to store the data as arrays
+    var taskInput = document.createElement("input");
+    taskInput.type = "hidden";
+    taskInput.name = "task_json";
+    taskInput.value = JSON.stringify(tasks);
+
+    var startTimeInput = document.createElement("input");
+    startTimeInput.type = "hidden";
+    startTimeInput.name = "start_time_json";
+    startTimeInput.value = JSON.stringify(startTimes);
+
+    var endTimeInput = document.createElement("input");
+    endTimeInput.type = "hidden";
+    endTimeInput.name = "end_time_json";
+    endTimeInput.value = JSON.stringify(endTimes);
+
+    var descriptionInput = document.createElement("input");
+    descriptionInput.type = "hidden";
+    descriptionInput.name = "description_json";
+    descriptionInput.value = JSON.stringify(descriptions);
+
     var form = document.querySelector("form");
-    form.querySelector("input[name='task']").value = JSON.stringify(tasks);
-    form.querySelector("input[name='start_time']").value = JSON.stringify(startTimes);
-    form.querySelector("input[name='end_time']").value = JSON.stringify(endTimes);
-    form.querySelector("input[name='description']").value = JSON.stringify(descriptions);
+    form.appendChild(taskInput);
+    form.appendChild(startTimeInput);
+    form.appendChild(endTimeInput);
+    form.appendChild(descriptionInput);
+
+    console.log(form);
+    console.log(form.querySelector("input[name='task_json']").value);
+    console.log(form.querySelector("input[name='start_time_json']").value);
+    console.log(form.querySelector("input[name='end_time_json']").value);
+    console.log(form.querySelector("input[name='description_json']").value);
 
     return true;
 }
+
 
 
 

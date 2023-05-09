@@ -6,6 +6,12 @@
 {% block content %}
     <div class="container">
         <h1 class="text-center my-4">Daily Schedule Viewer</h1>
+        <p>Select a date</p>
+        <form action="/daily_sched_viewer">
+            <label for="schedule_date" id="schedule_date">Select a date</label>
+            <input type="date" id="schedule_date" name="schedule_date">
+            <button type="submit">Go</button>
+        </form>
         {% if events %}
         <table class="table table-striped">
             <thead>

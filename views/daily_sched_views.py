@@ -25,6 +25,9 @@ def daily_sched_viewer(date=None):
 from flask import jsonify
 
 def save_daily_schedule():
+
+    print(request.form)
+    
     # Extract the date from the form data
     date_str = request.form.get("schedule_date")
     if not date_str:
@@ -40,10 +43,10 @@ def save_daily_schedule():
         db.session.commit()
 
     # Extract all the events from the form data
-    tasks = json.loads(request.form.get('task'))
-    start_times_str = json.loads(request.form.get('start_time'))
-    end_times_str = json.loads(request.form.get('end_time'))
-    descriptions = json.loads(request.form.get('description'))
+    tasks = json.loads(request.form.get('task_json'))
+    start_times_str = json.loads(request.form.get('start_time_json'))
+    end_times_str = json.loads(request.form.get('end_time_json'))
+    descriptions = json.loads(request.form.get('description_json'))
 
     for i in range(len(tasks)):
         start_time = datetime.strptime(start_times_str[i], "%H:%M").time().strftime('%H:%M')
@@ -52,6 +55,7 @@ def save_daily_schedule():
         event = Event(title=tasks[i], start_time=start_time, end_time=end_time, description=descriptions[i], daily_schedule_id=daily_schedule.id)
 
         db.session.add(event)
-    db.session.commit()
+        db.session.commit()
+
 
     return redirect(url_for('daily_sched_viewer', date=date_str))
